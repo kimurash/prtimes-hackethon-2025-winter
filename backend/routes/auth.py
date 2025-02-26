@@ -13,9 +13,12 @@ def login():
         user = User.get_user_by_email(email)
         if user and user.check_password(password):
             login_user(user)
-            return "success",200 # success レスポンス：番号, bodyにメアド
+            response_data = { # return user info
+                "email": "{}".format(user.email)
+            }
+            return jsonify(response_data), 200
         else:
-            return "failed",401 #success
+            return "",401 #failed
 
 @auth_bp.route('/test', methods=['GET'])
 def test(): # 生存確認API
