@@ -1,46 +1,73 @@
-import React, { useState } from 'react';
+import { useState } from "react";
+import { useNavigate } from "react-router";
+import { login } from "../api/auth";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log('Login attempt:', { email, password });
-    // ここにAPIリクエストを追加
+
+    try {
+      const userInfo = await login(email, password);
+      console.log(userInfo);
+      // TODO: リダイレクト先を設定する
+      navigate("/");
+    } catch (error) {
+      alert("ログインに失敗しました");
+      console.error(error);
+    }
   };
 
   return (
-    <div className="text-center flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-md">
-        <h2 className="text-2xl font-semibold text-center mb-6">ログイン</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium">メールアドレス</label>
+    <div className="flex justify-center items-center h-screen bg-gray-100">
+      <div className="bg-white p-8 rounded shadow-md w-96">
+        <h2 className="text-2xl font-bold mb-4">ログイン</h2>
+        <form>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="email"
+            >
+              メールアドレス
+            </label>
             <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="email"
               type="email"
+              placeholder="メールアドレス"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 w-full p-2 border rounded-md focus:ring focus:ring-blue-300"
-              required
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium">パスワード</label>
+          <div className="mb-6">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="password"
+            >
+              パスワード
+            </label>
             <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="password"
               type="password"
+              placeholder="パスワード"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 w-full p-2 border rounded-md focus:ring focus:ring-blue-300"
-              required
             />
           </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 transition"
-          >
-            ログイン
-          </button>
+          <div className="flex items-center justify-between">
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              type="submit"
+              onClick={handleSubmit}
+            >
+              ログイン
+            </button>
+          </div>
         </form>
       </div>
     </div>
