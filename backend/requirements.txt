@@ -1,0 +1,4 @@
+Flask==2.2.3
+psycopg2==2.9.6
+werkzeug==2.2.3
+python-dotenv==0.21.1
