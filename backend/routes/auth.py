@@ -9,19 +9,17 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-
         # ユーザー情報を取得
         user = User.get_user_by_username(username)
-
         if user and user.check_password(password):
             login_user(user)
-            return '',200 # success
+            # return '',200 # success
+            return jsonify({"message": "Login successful"}), 200
         else:
-            return '',401 # unauthorized
-    else: # badrequest
-        return '',500
+            # return '',401 # unauthorized
+            return jsonify({"message": "Login failed"}), 401
 
 @auth_bp.route('/test', methods=['GET'])
-def test():
+def test(): # 生存確認API
     if request.method == 'GET':
-        return jsonify({"message": "okay"}), 200
+        return jsonify({"message": "Hello"}), 200

@@ -15,9 +15,10 @@ class User(UserMixin):
         cur.execute('SELECT * FROM users WHERE username = %s', (username,))
         user_data = cur.fetchone()
         conn.close()
-
+        print(user_data)  # デバッグ用に確認
         if user_data:
-            return cls(id=user_data[0], username=user_data[1], password_hash=user_data[3])
+            # password_hashのインデックスを修正
+            return cls(id=user_data[0], username=user_data[1], password_hash=user_data[2])  # 修正箇所
         return None
 
     @classmethod
@@ -29,7 +30,8 @@ class User(UserMixin):
         conn.close()
 
         if user_data:
-            return cls(id=user_data[0], username=user_data[1], password_hash=user_data[3])
+            # password_hashのインデックスを修正
+            return cls(id=user_data[0], username=user_data[1], password_hash=user_data[2])  # 修正箇所
         return None
 
     def check_password(self, password):
