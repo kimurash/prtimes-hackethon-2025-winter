@@ -7,17 +7,15 @@ auth_bp = Blueprint('auth', __name__)
 @auth_bp.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
+        email = request.form['email']
         password = request.form['password']
         # ユーザー情報を取得
-        user = User.get_user_by_username(username)
+        user = User.get_user_by_email(email)
         if user and user.check_password(password):
             login_user(user)
-            # return '',200 # success
-            return jsonify({"message": "Login successful"}), 200
+            return "success",200 # success レスポンス：番号, bodyにメアド
         else:
-            # return '',401 # unauthorized
-            return jsonify({"message": "Login failed"}), 401
+            return "failed",401 #success
 
 @auth_bp.route('/test', methods=['GET'])
 def test(): # 生存確認API

@@ -3,22 +3,21 @@ import psycopg2
 from werkzeug.security import generate_password_hash, check_password_hash
 
 class User(UserMixin):
-    def __init__(self, id, username, password_hash):
+    def __init__(self, id, email, password_hash):
         self.id = id
-        self.username = username
+        self.email = email
         self.password_hash = password_hash
 
     @classmethod
-    def get_user_by_username(cls, username):
+    def get_user_by_email(cls, email):
         conn = psycopg2.connect("dbname=dreamsink user=test password=test host=localhost port=5432")
         cur = conn.cursor()
-        cur.execute('SELECT * FROM users WHERE username = %s', (username,))
+        cur.execute('SELECT * FROM users WHERE email = %s', (email,))
         user_data = cur.fetchone()
         conn.close()
         print(user_data)  # デバッグ用に確認
         if user_data:
-            # password_hashのインデックスを修正
-            return cls(id=user_data[0], username=user_data[1], password_hash=user_data[2])  # 修正箇所
+            return cls(id=user_data[0], email=user_data[1], password_hash=user_data[2])
         return None
 
     @classmethod
@@ -30,18 +29,17 @@ class User(UserMixin):
         conn.close()
 
         if user_data:
-            # password_hashのインデックスを修正
-            return cls(id=user_data[0], username=user_data[1], password_hash=user_data[2])  # 修正箇所
+            return cls(id=user_data[0], email=user_data[1], password_hash=user_data[2])
         return None
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
     @classmethod
-    def create_user(cls, username, password):
+    def create_user(cls, email, password):
         password_hash = generate_password_hash(password)
         conn = psycopg2.connect("dbname=dreamsink user=test password=test host=localhost port=5432")
         cur = conn.cursor()
-        cur.execute('INSERT INTO users (username, password_hash) VALUES (%s, %s)', (username, password_hash))
+        cur.execute('INSERT INTO users (email, password_hash) VALUES (%s, %s)', (email, password_hash))
         conn.commit()
         conn.close()

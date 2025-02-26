@@ -10,9 +10,9 @@ port = "5432"
 
 # サンプルデータ
 users = [
-    {"username": "testuser1", "password": "password1"},
-    {"username": "testuser2", "password": "password2"},
-    {"username": "testuser3", "password": "password3"},
+    {"email": "test1@example.com", "password": "password1"},
+    {"email": "test2@example.com", "password": "password2"},
+    {"email": "test3@example.com", "password": "password3"},
 ]
 
 # パスワードをハッシュ化してデータベースに挿入
@@ -26,8 +26,8 @@ def insert_sample_data():
         hashed_password = generate_password_hash(user_data["password"])
 
         # SQL文を作成してデータを挿入
-        sql = "INSERT INTO users (username, password_hash) VALUES (%s, %s)"
-        cur.execute(sql, (user_data["username"], hashed_password))
+        sql = "INSERT INTO users (email, password_hash) VALUES (%s, %s)"
+        cur.execute(sql, (user_data["email"], hashed_password))
 
     # 変更をコミットして接続を閉じる
     conn.commit()
