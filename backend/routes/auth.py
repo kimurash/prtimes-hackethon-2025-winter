@@ -14,6 +14,7 @@ def login():
         if user and user.check_password(password):
             login_user(user)
             response_data = { # return user info
+                "username": "{}".format(user.username),
                 "email": "{}".format(user.email)
             }
             return jsonify(response_data), 200

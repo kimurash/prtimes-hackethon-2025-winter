@@ -10,26 +10,22 @@ port = "5432"
 
 # サンプルデータ
 users = [
-    {"email": "test1@example.com", "password": "password1"},
-    {"email": "test2@example.com", "password": "password2"},
-    {"email": "test3@example.com", "password": "password3"},
+    {"username": "testuser1", "email": "test1@example.com", "password": "password1"},
+    {"username": "testuser2", "email": "test2@example.com", "password": "password2"},
+    {"username": "testuser3", "email": "test3@example.com", "password": "password3"},
 ]
 
 # パスワードをハッシュ化してデータベースに挿入
 def insert_sample_data():
-    # PostgreSQLに接続
     conn = psycopg2.connect(dbname=dbname, user=user, password=password, host=host, port=port)
     cur = conn.cursor()
 
     for user_data in users:
-        # パスワードをハッシュ化
         hashed_password = generate_password_hash(user_data["password"])
+        # insert 3 val
+        sql = "INSERT INTO users (username, email, password_hash) VALUES (%s, %s, %s)"
+        cur.execute(sql, (user_data["username"], user_data["email"], hashed_password))
 
-        # SQL文を作成してデータを挿入
-        sql = "INSERT INTO users (email, password_hash) VALUES (%s, %s)"
-        cur.execute(sql, (user_data["email"], hashed_password))
-
-    # 変更をコミットして接続を閉じる
     conn.commit()
     cur.close()
     conn.close()
