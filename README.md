@@ -1,1 +1,1 @@
-# prtimes-hackerthon-2025-winter
+# prtimes-hackathon-2025-winter
