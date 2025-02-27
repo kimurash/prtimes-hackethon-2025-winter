@@ -7,10 +7,17 @@ dream_bp = Blueprint('dream', __name__)
 # ドリーム取得 自分の作成したもの全て
 @dream_bp.route('/dreams', methods=['GET'])
 # @login_required # 実験用
+@dream_bp.route('/dreams', methods=['GET'])
 def get_dreams():
-    # dreams = Dream.get_all_by_user(current_user.id)
     dreams = Dream.get_all_by_user(1)  # テスト用
+    print(f"✅ 取得した dreams: {dreams}")  # デバッグログ追加
+
+    if dreams is None:
+        print("❌ `get_all_by_user` が `None` を返しました！")
+        return jsonify([]), 200  # エラー防止のため、空リストを返す
+
     return jsonify([dream.__dict__ for dream in dreams]), 200
+
 
 # ドリーム取得、指定したドリームの中身を返す
 @dream_bp.route('/dreams/<int:dream_id>', methods=['GET'])
