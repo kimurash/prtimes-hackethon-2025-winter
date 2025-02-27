@@ -6,7 +6,7 @@ dream_bp = Blueprint('dream', __name__)
 
 # ドリーム取得 自分の作成したもの全て
 @dream_bp.route('/dreams', methods=['GET'])
-@jwt_required()
+# @login_required # 実験用
 def get_dreams():
     # debug code
     # token = request.headers.get('Authorization', "").replace("Bearer ", "")
