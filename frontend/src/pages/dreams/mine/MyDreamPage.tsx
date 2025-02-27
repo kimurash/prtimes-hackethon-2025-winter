@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchMyDreams } from "../../../api/dreams/mine";
 import { Dream } from "../../../types/dream";
-import Header from "../components/header";
+import Header from "../components/Header";
 import MyDreamCards from "./MyDreamCards";
 import MyDreamInput from "./MyDreamInput";
 
