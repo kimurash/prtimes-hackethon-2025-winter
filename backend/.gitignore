@@ -3,5 +3,5 @@ __pycache__/
 bin/
 include/
 lib/
-/.idea
+.idea/
 pyvenv.cfg
