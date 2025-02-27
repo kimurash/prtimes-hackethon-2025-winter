@@ -3,10 +3,10 @@ import { createDream, fetchMyDreams } from "../../../api/dreams/mine";
 import { Dream } from "../../../types/dream";
 
 interface MyDreamInputProps {
-  replaceMyDreams: (dreams: Dream[]) => void;
+  setMyDreams: (dreams: Dream[]) => void;
 }
 
-const MyDreamInput = ({ replaceMyDreams }: MyDreamInputProps) => {
+const MyDreamInput = ({ setMyDreams }: MyDreamInputProps) => {
   const [dream, setDream] = useState("");
   const [isPublic, setIsPublic] = useState(false);
 
@@ -25,7 +25,7 @@ const MyDreamInput = ({ replaceMyDreams }: MyDreamInputProps) => {
       await createDream(newDream);
 
       const myDreams: Dream[] = await fetchMyDreams();
-      replaceMyDreams(myDreams);
+      setMyDreams(myDreams);
     } catch (e) {
       alert("夢の保存に失敗しました");
       console.error(e);

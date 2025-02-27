@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchMyDreams } from "../../../api/dreams/mine";
 import { Dream } from "../../../types/dream";
-import Header from "../components/Header";
+import Header from "../components/header";
 import MyDreamCards from "./MyDreamCards";
 import MyDreamInput from "./MyDreamInput";
 
@@ -21,15 +21,15 @@ const MyDreamPage = () => {
     void fetchDreams();
   }, []);
 
-  const replaceMyDreams = (newMyDreams: Dream[]) => {
-    setMyDreams(newMyDreams);
-  };
-
   return (
     <div>
       <Header />
-      <MyDreamInput replaceMyDreams={replaceMyDreams} />
-      <MyDreamCards myDreams={myDreams} replaceMyDreams={replaceMyDreams} />
+      <MyDreamInput
+        setMyDreams={(newMyDreams: Dream[]) => {
+          setMyDreams(newMyDreams);
+        }}
+      />
+      <MyDreamCards myDreams={myDreams} />
     </div>
   );
 };
