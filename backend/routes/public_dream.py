@@ -1,5 +1,4 @@
 from flask import Blueprint, jsonify
-from flask_login import login_required
 from models.dream_models import Dream
 
 public_dream_bp = Blueprint('public_dream', __name__)
