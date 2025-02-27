@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_login import LoginManager
 from routes.auth import auth_bp
+from routes.memo import memo_bp
 from models.user_model import User  # Userモデルのインポート
 
 app = Flask(__name__)
@@ -18,6 +19,7 @@ def load_user(user_id):
 
 # Blueprintの登録
 app.register_blueprint(auth_bp)
+app.register_blueprint(memo_bp)
 
 if __name__ == "__main__":
     app.run(debug=True)
