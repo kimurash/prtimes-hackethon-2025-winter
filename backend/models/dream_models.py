@@ -6,8 +6,7 @@ DB_CONFIG = {  # connect info
     "user": "test",
     "password": "test",
     "host": "localhost",
-    "port": "5432",
-    "options": "-c client_encoding=UTF8"
+    "port": "5432"
 }
 
 class Dream:
