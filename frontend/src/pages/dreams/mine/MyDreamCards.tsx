@@ -1,4 +1,10 @@
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
+import {
+  FacebookIcon,
+  FacebookShareButton,
+  TwitterShareButton,
+  XIcon,
+} from "react-share";
 import { Dream } from "../../../types/dream";
 
 interface MyDreamCardsProps {
@@ -49,7 +55,26 @@ const MyDreamCards = ({ myDreams }: MyDreamCardsProps) => {
               <AlertDialog.Description size="4">
                 {dream.content}
               </AlertDialog.Description>
-              <Flex gap="3" justify="center">
+              <Flex gap="3" justify="center" direction="column" align="center">
+                <p className="text-center font-bold">
+                  ＼発信して夢を叶えよう！／
+                </p>
+                <Flex gap="2" justify="center">
+                  <FacebookShareButton
+                    url={window.location.href}
+                    title={dream.title}
+                    hashtag="#AprilDream"
+                  >
+                    <FacebookIcon size={40} round />
+                  </FacebookShareButton>
+                  <TwitterShareButton
+                    url={window.location.href}
+                    title={dream.title}
+                    hashtags={["AprilDream"]}
+                  >
+                    <XIcon size={40} round />
+                  </TwitterShareButton>
+                </Flex>
                 <AlertDialog.Cancel>
                   <Button variant="soft" color="gray">
                     閉じる
