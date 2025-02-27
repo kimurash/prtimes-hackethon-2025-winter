@@ -14,3 +14,15 @@ def view_public_dream():
     else:
         return jsonify({'message': 'No public dreams found'}),404
 
+# いいねのインクリメントを行うAPI
+@public_dream_bp.route('/public/like/<int:dream_id>',methods=['POST'])
+#  @login_required # 本番用
+def increment_like_count(dream_id):
+    dream = Dream.get_by_id(dream_id) # 該当のデータ抽出
+    dream_count = dream.likes + 1
+    # インクリメントした「いいね数」に更新
+    if dream.update_likes(dream_id=dream_id,likes=dream_count):
+        return jsonify({'message': 'Successfully updated like_count'}), 200
+    else:
+        return jsonify({'message': 'Failed to update like_count'}), 404
+

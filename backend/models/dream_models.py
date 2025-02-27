@@ -130,3 +130,25 @@ class Dream:
         except Exception as e:
             print(f"Error occurred while fetching public dreams: {e}")
             return None
+
+    @classmethod
+    def update_likes(cls,dream_id,likes):
+        # likeを指定してデータを更新
+        # 必須データ：dream_id, likes
+        try:
+            conn = psycopg2.connect(**DB_CONFIG)
+            cur = conn.cursor()
+            cur.execute(
+                "UPDATE dreams SET likes = %s WHERE id = %s",
+                (likes, dream_id)
+            )
+            conn.commit()  # 変更をコミット
+            cur.close()
+            conn.close()
+            if cur.rowcount == 0:
+                print(f"Dream with id {dream_id} not found.")
+                return False
+            return True
+        except Exception as e:
+            print(f"Error occurred while updating dream: {e}")
+            return None
