@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { login } from "../api/auth";
+import { login } from "../../api/auth";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
