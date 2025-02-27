@@ -40,8 +40,29 @@ def create_dream():
 
 # ドリーム削除
 @dream_bp.route('/dreams/<int:dream_id>', methods=['DELETE'])
+# @login_required # 実験用
 def delete_dream(dream_id):  # ドリームIDに基づいて削除
     if Dream.delete(dream_id):
         return jsonify({"success": "削除完了！"}), 200
     else:
         return jsonify({"error": "削除失敗"}), 400
+
+# ドリーム更新
+@dream_bp.route('/dreams/<int:dream_id>', methods=['PUT'])
+# @login_required # 実験用
+def update_dream(dream_id):
+    # user_id = current_user.id # 本番
+    user_id = 1
+    # define data from front
+    data = request.get_json()
+    title = data.get('title')
+    content = data.get('content')
+    is_public = data.get('is_public')
+    likes = data.get('likes')
+
+    if Dream.update(dream_id,title, content, is_public, likes):
+        return jsonify({"success": "更新完了"}), 200
+    else:
+        return jsonify({"error": "更新できず"}), 400
+
+

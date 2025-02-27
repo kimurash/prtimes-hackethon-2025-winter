@@ -10,12 +10,13 @@ DB_CONFIG = {  # connect info
 }
 
 class Dream:
-    def __init__(self, id, user_id, title, content, is_public):
+    def __init__(self, id, user_id, title, content, is_public,likes):
         self.id = id
         self.user_id = user_id
         self.title = title
         self.content = content
         self.is_public = is_public
+        self.likes = likes
 
     @classmethod  # ユーザーのメモ一覧を取得
     def get_all_by_user(cls, user_id):
@@ -37,7 +38,7 @@ class Dream:
         try:
             conn = psycopg2.connect(**DB_CONFIG)
             cur = conn.cursor()
-            cur.execute("SELECT id, user_id, title, content, is_public FROM dreams WHERE id = %s", (id,))
+            cur.execute("SELECT id, user_id, title, content, is_public, likes FROM dreams WHERE id = %s", (id,))
             result = cur.fetchone()
             if result:
                 cur.close()
@@ -71,18 +72,19 @@ class Dream:
             return None
 
     @classmethod
-    def update(cls, dream_id, title, content, is_public):
-        """メモを更新"""
+    def update(cls, dream_id, title, content, is_public, likes):
+        # ドリームデータの一つを更新
         try:
             conn = psycopg2.connect(**DB_CONFIG)
             cur = conn.cursor()
             cur.execute(
-                "UPDATE dreams SET title = %s, content = %s, is_public = %s WHERE id = %s",
-                (title, content, is_public, dream_id)
+                "UPDATE dreams SET title = %s, content = %s, is_public = %s, likes = %s WHERE id = %s",
+                (title, content, is_public, likes, dream_id)
             )
             conn.commit()  # 変更をコミット
             cur.close()
             conn.close()
+
             if cur.rowcount == 0:
                 print(f"Dream with id {dream_id} not found.")
                 return False
@@ -90,7 +92,6 @@ class Dream:
         except Exception as e:
             print(f"Error occurred while updating dream: {e}")
             return None
-
 
     @classmethod
     def delete(cls, dream_id):
