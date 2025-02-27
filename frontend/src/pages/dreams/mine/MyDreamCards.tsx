@@ -5,6 +5,22 @@ interface MyDreamCardsProps {
   myDreams: Dream[];
 }
 
+const getPinkGradientClass = (likes: number): string => {
+  if (likes >= 100) {
+    return "to-pink-500";
+  } else if (likes >= 70) {
+    return "to-pink-400";
+  } else if (likes >= 50) {
+    return "to-pink-300";
+  } else if (likes >= 30) {
+    return "to-pink-200";
+  } else if (likes >= 10) {
+    return "to-pink-100";
+  } else {
+    return "to-pink-50";
+  }
+};
+
 const MyDreamCards = ({ myDreams }: MyDreamCardsProps) => {
   return (
     <>
@@ -12,7 +28,13 @@ const MyDreamCards = ({ myDreams }: MyDreamCardsProps) => {
         {myDreams.map((dream, index) => (
           <AlertDialog.Root key={index}>
             <AlertDialog.Trigger>
-              <div className="border bg-white rounded-xl shadow-lg p-4 min-h-48 py-6">
+              <div
+                // prettier-ignore
+                className={`
+                  border rounded-xl shadow-lg p-4 min-h-48 py-6 bg-gradient-to-b from-white
+                  ${getPinkGradientClass(dream.likes)}
+                `}
+              >
                 <p className="text-gray-800 overflow-hidden text-ellipsis">
                   {dream.title}
                   {dream.is_public && (
