@@ -1,9 +1,13 @@
 from flask import Flask
+from flask_cors import CORS
 from flask_login import LoginManager
-from routes.auth import auth_bp
+from routes.dream import dream_bp
 from models.user_model import User  # Userモデルのインポート
+from routes.auth import auth_bp
 
 app = Flask(__name__)
+
+CORS(app)
 
 # Flask-Loginのセットアップ
 app.config['SECRET_KEY'] = 'your_secret_key'  # セッション用のシークレットキー（必須）
@@ -18,6 +22,7 @@ def load_user(user_id):
 
 # Blueprintの登録
 app.register_blueprint(auth_bp)
+app.register_blueprint(dream_bp)
 
 if __name__ == "__main__":
     app.run(debug=True)
