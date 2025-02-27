@@ -3,7 +3,7 @@ import psycopg2
 DB_CONFIG = {  # connect info
     "dbname": "dreamsink",
     "user": "test",
-    "password": "test",
+    "password": "password",
     "host": "localhost",
     "port": "5432"
 }
@@ -123,6 +123,7 @@ class Dream:
         try:
             conn = psycopg2.connect(**DB_CONFIG)
             cur = conn.cursor()
+            # 並び順を一定にするためidの照準にソート
             cur.execute("SELECT id, user_id, title, content, is_public, likes FROM dreams WHERE is_public = TRUE ORDER BY id DESC")
             dreams = [cls(*row) for row in cur.fetchall()]
             cur.close()
