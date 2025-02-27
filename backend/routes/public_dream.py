@@ -1,6 +1,5 @@
 from flask import Blueprint, jsonify
-
-from backend.models.dream import Dream
+from models.dream import Dream
 
 public_dream_bp = Blueprint('public_dream', __name__)
 
