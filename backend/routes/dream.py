@@ -18,7 +18,7 @@ def get_dreams():
 def get_one_dream(dream_id):
     dream = Dream.get_by_id(dream_id)
     if dream is None:
-        return jsonify({"error": "指定されたドリームは存在しません"}), 404  # ドリームが見つからない場合は404エラーを返す
+        return jsonify({"error": "Not found"}), 404  # ドリームが見つからない場合は404エラーを返す
 
     return jsonify(dream.__dict__), 200
 # ドリーム新規作成
@@ -43,9 +43,9 @@ def create_dream():
 # @login_required # 実験用
 def delete_dream(dream_id):  # ドリームIDに基づいて削除
     if Dream.delete(dream_id):
-        return jsonify({"success": "削除完了！"}), 200
+        return jsonify({"success": "success to delete"}), 200
     else:
-        return jsonify({"error": "削除失敗"}), 400
+        return jsonify({"error": "An error occurred"}), 400
 
 # ドリーム更新
 @dream_bp.route('/dreams/<int:dream_id>', methods=['PUT'])
@@ -61,8 +61,8 @@ def update_dream(dream_id):
     likes = data.get('likes')
 
     if Dream.update(dream_id,title, content, is_public, likes):
-        return jsonify({"success": "更新完了"}), 200
+        return jsonify({"success": "finished"}), 200
     else:
-        return jsonify({"error": "更新できず"}), 400
+        return jsonify({"error": "failed to update"}), 400
 
 
