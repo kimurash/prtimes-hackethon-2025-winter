@@ -1,17 +1,57 @@
 ## 環境構築
 
+### 仮想環境
+
+```sh
+python -m venv .
+pip install -r requirements.txt
+```
+
+### データベース
+
 PostgreSQLをインストール
 
-```bash
+```sh
+# インストール
 brew install postgresql@14
 
+# PostgreSQLを起動
 brew services start postgresql@14
+
+# 起動状況の確認
 brew services list
+```
+
+データベースを作成
+
+```sh
+# データベースの一覧を表示
+❯ psql -l
+                           List of databases
+   Name    |  Owner  | Encoding | Collate | Ctype |  Access privileges
+-----------+---------+----------+---------+-------+---------------------
+ postgres  | shunsei | UTF8     | C       | C     |
+ template0 | shunsei | UTF8     | C       | C     | =c/shunsei         +
+           |         |          |         |       | shunsei=CTc/shunsei
+ template1 | shunsei | UTF8     | C       | C     | =c/shunsei         +
+           |         |          |         |       | shunsei=CTc/shunsei
+(3 rows)
+
+# データベースに接続
+psql postgres
 ```
 
 実行したSQL文
 
+> [!important]
+> データベースユーザーのパスワードは全て`password`
+
 ```sql
+CREATE DATABASE dreamsink;
+
+-- Connect to the database
+\c dreamsink;
+
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
@@ -48,15 +88,19 @@ BEFORE UPDATE ON dreams
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at();
 
+-- Insert sample data
+\i seeds/users.sql
+\i seeds/dreams.sql
+
 -- Create a test user
-CREATE USER test WITH PASSWORD 'testpassword';
+CREATE USER test WITH PASSWORD 'password';
 
 -- Grant superuser privileges to the test user
 ALTER USER test WITH SUPERUSER;
 ```
 
-`users` テーブルにサンプルデータを追加する
+## 起動方法
 
-```
-python createuser.py
+```sh
+python app.py
 ```
