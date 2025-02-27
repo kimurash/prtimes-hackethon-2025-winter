@@ -21,11 +21,12 @@ class Dream:
     @classmethod
     def get_all_by_user(cls, user_id):
         # ユーザーのメモ一覧を取得
+        # **** user_id必要 ****
         try:
             conn = psycopg2.connect(**DB_CONFIG)
             cur = conn.cursor()
             # user_idに該当するメモデータを取得
-            cur.execute("SELECT id, user_id, title, content, is_public FROM dreams WHERE user_id = %s", (user_id,))
+            cur.execute("SELECT id, user_id, title, content, is_public,likes FROM dreams WHERE user_id = %s", (user_id,))
             dreams = [cls(*row) for row in cur.fetchall()]
             cur.close()
             conn.close()
@@ -57,13 +58,14 @@ class Dream:
 
     @classmethod
     def create(cls, user_id, title, content, is_public=False):
-        # 新しいメモの作成
+        # 新しいメモの作成 ****user_id必要****
         try:
+            likes = 0
             conn = psycopg2.connect(**DB_CONFIG)
             cur = conn.cursor()
             cur.execute(
-                "INSERT INTO dreams (user_id, title, content, is_public) VALUES (%s, %s, %s, %s) RETURNING id",
-                (user_id, title, content, is_public)
+                "INSERT INTO dreams (user_id, title, content, is_public, likes) VALUES (%s, %s, %s, %s, %s) RETURNING id",
+                (user_id, title, content, is_public,likes)
             )
             dream_id = cur.fetchone()[0]  # 新しいメモのIDを取得
             conn.commit()  # 変更をコミット
