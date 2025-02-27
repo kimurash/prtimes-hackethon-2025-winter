@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { login } from "../../api/auth";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -10,14 +9,7 @@ const LoginPage = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
-    try {
-      await login(email, password);
-      navigate("/");
-    } catch (error) {
-      alert("ログインに失敗しました");
-      console.error(error);
-    }
+    navigate("/");
   };
 
   return (
