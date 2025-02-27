@@ -1,12 +1,10 @@
-from flask import Blueprint, request, jsonify
-from flask_login import login_required, current_user
+from flask import Blueprint, jsonify, request
 from models.dream_models import Dream
 
 dream_bp = Blueprint('dream', __name__)
 
 # ドリーム取得 自分の作成したもの全て
 @dream_bp.route('/dreams', methods=['GET'])
-# @login_required # 実験用
 def get_dreams():
     dreams = Dream.get_all_by_user(1)  # テスト用
     return jsonify([dream.__dict__ for dream in dreams]), 200
@@ -14,7 +12,6 @@ def get_dreams():
 
 # ドリーム取得、指定したドリームの中身を返す
 @dream_bp.route('/dreams/<int:dream_id>', methods=['GET'])
-# @login_required # 実験用
 def get_one_dream(dream_id):
     dream = Dream.get_by_id(dream_id)
     if dream is None:
@@ -23,7 +20,6 @@ def get_one_dream(dream_id):
     return jsonify(dream.__dict__), 200
 # ドリーム新規作成
 @dream_bp.route('/dreams', methods=['POST'])
-# @login_required # 実験用
 def create_dream():
     data = request.get_json()
     title = data.get('title')
@@ -40,7 +36,6 @@ def create_dream():
 
 # ドリーム削除
 @dream_bp.route('/dreams/<int:dream_id>', methods=['DELETE'])
-# @login_required # 実験用
 def delete_dream(dream_id):  # ドリームIDに基づいて削除
     if Dream.delete(dream_id):
         return jsonify({"success": "success to delete"}), 200
@@ -51,8 +46,6 @@ def delete_dream(dream_id):  # ドリームIDに基づいて削除
 @dream_bp.route('/dreams/<int:dream_id>', methods=['PUT'])
 # @login_required # 実験用
 def update_dream(dream_id):
-    # user_id = current_user.id # 本番
-    user_id = 1
     # define data from front
     data = request.get_json()
     title = data.get('title')
