@@ -9,7 +9,7 @@ DB_CONFIG = {  # connect info
     "port": "5432"
 }
 
-class Memo:
+class Dream:
     def __init__(self, id, user_id, title, content, is_public):
         self.id = id
         self.user_id = user_id
@@ -23,13 +23,13 @@ class Memo:
             conn = psycopg2.connect(**DB_CONFIG)
             cur = conn.cursor()
             # user_idに該当するメモデータを取得
-            cur.execute("SELECT id, user_id, title, content, is_public FROM memos WHERE user_id = %s", (user_id,))
-            memos = [cls(*row) for row in cur.fetchall()]
+            cur.execute("SELECT id, user_id, title, content, is_public FROM dreams WHERE user_id = %s", (user_id,))
+            dreams = [cls(*row) for row in cur.fetchall()]
             cur.close()
             conn.close()
-            return memos
+            return dreams
         except Exception as e:
-            print(f"Error occurred while fetching user memos: {e}")
+            print(f"Error occurred while fetching user dreams: {e}")
             return None
 
     @classmethod  # メモのidに基づいて、特定のメモを取得
@@ -37,7 +37,7 @@ class Memo:
         try:
             conn = psycopg2.connect(**DB_CONFIG)
             cur = conn.cursor()
-            cur.execute("SELECT id, user_id, title, content, is_public FROM memos WHERE id = %s", (id,))
+            cur.execute("SELECT id, user_id, title, content, is_public FROM dreams WHERE id = %s", (id,))
             result = cur.fetchone()
             if result:
                 cur.close()
@@ -46,10 +46,10 @@ class Memo:
             else:
                 cur.close()
                 conn.close()
-                print(f"Error occurred getting memo with id {id}")
+                print(f"Error occurred getting dream with id {id}")
                 return None  # メモが見つからなかった場合
         except Exception as e:
-            print(f"Error occurred while fetching memo by id: {e}")
+            print(f"Error occurred while fetching dream by id: {e}")
             return None
 
     @classmethod # 新しいメモの作成
@@ -58,50 +58,55 @@ class Memo:
             conn = psycopg2.connect(**DB_CONFIG)
             cur = conn.cursor()
             cur.execute(
-                "INSERT INTO memos (user_id, title, content, is_public) VALUES (%s, %s, %s, %s) RETURNING id",
+                "INSERT INTO dreams (user_id, title, content, is_public) VALUES (%s, %s, %s, %s) RETURNING id",
                 (user_id, title, content, is_public)
             )
-            memo_id = cur.fetchone()[0]  # 新しいメモのIDを取得
+            dream_id = cur.fetchone()[0]  # 新しいメモのIDを取得
             conn.commit()  # 変更をコミット
             cur.close()
             conn.close()
-            return memo_id
+            return dream_id
         except Exception as e:
-            print(f"Error occurred while creating memo: {e}")
+            print(f"Error occurred while creating dream: {e}")
             return None
 
     @classmethod
-    def update(cls, memo_id, title, content, is_public):
+    def update(cls, dream_id, title, content, is_public):
         """メモを更新"""
         try:
             conn = psycopg2.connect(**DB_CONFIG)
             cur = conn.cursor()
             cur.execute(
-                "UPDATE memos SET title = %s, content = %s, is_public = %s WHERE id = %s",
-                (title, content, is_public, memo_id)
+                "UPDATE dreams SET title = %s, content = %s, is_public = %s WHERE id = %s",
+                (title, content, is_public, dream_id)
             )
             conn.commit()  # 変更をコミット
             cur.close()
             conn.close()
             if cur.rowcount == 0:
-                print(f"Memo with id {memo_id} not found.")
+                print(f"Dream with id {dream_id} not found.")
+                return False
+            return True
         except Exception as e:
-            print(f"Error occurred while updating memo: {e}")
+            print(f"Error occurred while updating dream: {e}")
+            return None
+
 
     @classmethod
-    def delete(cls, memo_id):
+    def delete(cls, dream_id):
         """メモを削除"""
         try:
             conn = psycopg2.connect(**DB_CONFIG)
             cur = conn.cursor()
-            cur.execute("DELETE FROM memos WHERE id = %s", (memo_id,))
+            cur.execute("DELETE FROM dreams WHERE id = %s", (dream_id,))
             conn.commit()  # 変更をコミット
             cur.close()
             conn.close()
             if cur.rowcount == 0:
-                print(f"Memo with id {memo_id} not found.")
+                print(f"Dream with id {dream_id} not found.")
+                return False
 
             return True
         except Exception as e:
-            print(f"Error occurred while deleting memo: {e}")
+            print(f"Error occurred while deleting Dream: {e}")
             return False
