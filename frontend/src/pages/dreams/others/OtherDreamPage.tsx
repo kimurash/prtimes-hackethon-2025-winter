@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
+import Header from "../components/header";
 
-const API_URL = "http://localhost:5000"; // ここをバックエンドのURLに変更
+const API_URL = "/api/dreams"; // ここをバックエンドのURLに変更
 
 type Card = {
   id: number;
@@ -74,6 +75,8 @@ const DreamCards = () => {
   };
 
   return (
+    <>
+    <Header/>
     <div className="flex flex-col items-center p-6">
       <h2 className="text-xl font-bold mb-6 flex items-center">
         みんなの夢を見よう！🌸
@@ -101,6 +104,7 @@ const DreamCards = () => {
       {loading && <p className="mt-6 text-gray-500">読み込み中...</p>}
       <div ref={observerRef} className="h-10"></div>
     </div>
+    </>
   );
 };
 
