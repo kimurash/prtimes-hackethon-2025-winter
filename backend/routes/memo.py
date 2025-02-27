@@ -19,6 +19,7 @@ def get_one_memo(memo_id):
     memo = Memo.get_by_id(memo_id)
     return jsonify(memo.__dict__) ,200
 
+# メモ新規作成
 @memo_bp.route('/memos', methods=['POST'])
 # @login_required # 実験用
 def create_memo():
@@ -34,3 +35,13 @@ def create_memo():
     memo_id = Memo.create(user_id, title, content, is_public=False)
 
     return jsonify({"message": "メモを作成しました", "memo_id": memo_id}), 201
+
+# メモ削除
+@memo_bp.route('/memos/<int:memo_id>', methods=['DELETE'])
+def delete_memo(memo_id): # メモIDに基づいて削除
+    if Memo.delete(memo_id) is True:
+        return jsonify({"success": "削除完了！"}),200
+    else:
+        return jsonify({"error": "削除失敗"}),400
+
+

@@ -100,5 +100,8 @@ class Memo:
             conn.close()
             if cur.rowcount == 0:
                 print(f"Memo with id {memo_id} not found.")
+
+            return True
         except Exception as e:
             print(f"Error occurred while deleting memo: {e}")
+            return False
