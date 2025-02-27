@@ -63,15 +63,12 @@ class Memo:
             )
             memo_id = cur.fetchone()[0]  # 新しいメモのIDを取得
             conn.commit()  # 変更をコミット
+            cur.close()
+            conn.close()
             return memo_id
         except Exception as e:
             print(f"Error occurred while creating memo: {e}")
             return None
-        finally:
-            if cur:
-                cur.close()  # カーソルを閉じる
-            if conn:
-                conn.close()  # 接続を閉じる
 
     @classmethod
     def update(cls, memo_id, title, content, is_public):
@@ -84,15 +81,12 @@ class Memo:
                 (title, content, is_public, memo_id)
             )
             conn.commit()  # 変更をコミット
+            cur.close()
+            conn.close()
             if cur.rowcount == 0:
                 print(f"Memo with id {memo_id} not found.")
         except Exception as e:
             print(f"Error occurred while updating memo: {e}")
-        finally:
-            if cur:
-                cur.close()  # カーソルを閉じる
-            if conn:
-                conn.close()  # 接続を閉じる
 
     @classmethod
     def delete(cls, memo_id):
@@ -102,13 +96,9 @@ class Memo:
             cur = conn.cursor()
             cur.execute("DELETE FROM memos WHERE id = %s", (memo_id,))
             conn.commit()  # 変更をコミット
+            cur.close()
+            conn.close()
             if cur.rowcount == 0:
                 print(f"Memo with id {memo_id} not found.")
         except Exception as e:
             print(f"Error occurred while deleting memo: {e}")
-        finally:
-            if cur:
-                cur.close()  # カーソルを閉じる
-            if conn:
-                conn.close()  # 接続を閉じる
-
