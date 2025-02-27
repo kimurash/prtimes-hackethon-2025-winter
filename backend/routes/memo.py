@@ -10,4 +10,11 @@ memo_bp = Blueprint('memo', __name__)
 def get_memos():
     # memos = Memo.get_all_by_user(current_user.id)
     memos = Memo.get_all_by_user(1) # テスト用
-    return jsonify({"memos": [memo.__dict__ for memo in memos]}), 200
+    return jsonify([memo.__dict__ for memo in memos]), 200
+
+# メモ取得、指定したメモの中身を返す
+@memo_bp.route('/memos/<int:memo_id>', methods=['GET'])
+# @login_required # 実験用
+def get_one_memo(memo_id):
+    memo = Memo.get_by_id(memo_id)
+    return jsonify(memo.__dict__) ,200

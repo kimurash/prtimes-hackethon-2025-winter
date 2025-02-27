@@ -32,7 +32,7 @@ class Memo:
             print(f"Error occurred while fetching user memos: {e}")
             return None
 
-    @classmethod  # idに基づいて、特定のメモを取得
+    @classmethod  # メモのidに基づいて、特定のメモを取得
     def get_by_id(cls, id):
         try:
             conn = psycopg2.connect(**DB_CONFIG)
