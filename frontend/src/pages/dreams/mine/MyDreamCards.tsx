@@ -15,6 +15,11 @@ const MyDreamCards = ({ myDreams }: MyDreamCardsProps) => {
               <div className="border bg-white rounded-xl shadow-lg p-4 min-h-48 py-6">
                 <p className="text-gray-800 overflow-hidden text-ellipsis">
                   {dream.title}
+                  {dream.is_public && (
+                    <p className="text-green-500 font-medium mt-2 text-sm border-t pt-5 text-center">
+                      いいね {dream.likes}
+                    </p>
+                  )}
                 </p>
               </div>
             </AlertDialog.Trigger>
@@ -23,7 +28,6 @@ const MyDreamCards = ({ myDreams }: MyDreamCardsProps) => {
                 {dream.content}
               </AlertDialog.Description>
               <Flex gap="3" justify="center">
-                {/* mt 削除 */}
                 <AlertDialog.Cancel>
                   <Button variant="soft" color="gray">
                     閉じる
