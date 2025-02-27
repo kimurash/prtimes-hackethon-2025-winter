@@ -1,14 +1,19 @@
-from flask import Blueprint, request,jsonify
+from flask import Blueprint, jsonify, request
 from flask_login import login_user
-from models.user_model import User # userモデル読み込み
+from models.user_model import User  # userモデル読み込み
+
 # ブループリント作成
 auth_bp = Blueprint('auth', __name__)
+
 # ログイン機能
 @auth_bp.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
+        credentials = request.get_json()
+
+        email = credentials['email']
+        password = credentials['password']
+
         # ユーザー情報を取得
         user = User.get_user_by_email(email)
         if user and user.check_password(password):
