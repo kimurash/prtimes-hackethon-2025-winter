@@ -1,5 +1,4 @@
 import psycopg2
-from flask_login import current_user
 
 DB_CONFIG = {  # connect info
     "dbname": "dreamsink",
@@ -41,7 +40,7 @@ class Dream:
         try:
             conn = psycopg2.connect(**DB_CONFIG)
             cur = conn.cursor()
-            cur.execute("SELECT id, user_id, title, content, is_public, likes FROM dreams WHERE id = %s", (id,))
+            cur.execute("SELECT id, user_id, title, content, is_public, likes FROM dreams WHERE id = %s", (id,)) 
             result = cur.fetchone()
             if result:
                 cur.close()
@@ -124,7 +123,7 @@ class Dream:
         try:
             conn = psycopg2.connect(**DB_CONFIG)
             cur = conn.cursor()
-            cur.execute("SELECT id, user_id, title, content, is_public, likes FROM dreams WHERE is_public = TRUE")
+            cur.execute("SELECT id, user_id, title, content, is_public, likes FROM dreams WHERE is_public = TRUE ORDER BY id DESC")
             dreams = [cls(*row) for row in cur.fetchall()]
             cur.close()
             conn.close()
