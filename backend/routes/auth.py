@@ -16,7 +16,7 @@ def login():
         # ユーザー情報を取得
         user = User.get_user_by_email(email)
         if user and user.check_password(password):
-            login_user(user)
+            login_user(user) # ログイン情報登録
             response_data = { # return user info
                 "username": "{}".format(user.username),
                 "email": "{}".format(user.email)
