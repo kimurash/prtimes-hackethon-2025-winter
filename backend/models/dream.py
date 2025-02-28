@@ -59,7 +59,7 @@ class Dream:
     def create(cls, user_id, title, content, is_public=False):
         # 新しいメモの作成 ****user_id必要****
         try:
-            likes = 0
+            likes = 0 # 作成時はlikesは0
             conn = psycopg2.connect(**DB_CONFIG)
             cur = conn.cursor()
             cur.execute(
