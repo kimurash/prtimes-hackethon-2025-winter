@@ -21,15 +21,15 @@ const MyDreamPage = () => {
     void fetchDreams();
   }, []);
 
+  const replaceMyDreams = (newMyDreams: Dream[]) => {
+    setMyDreams(newMyDreams);
+  };
+
   return (
     <div>
       <Header />
-      <MyDreamInput
-        setMyDreams={(newMyDreams: Dream[]) => {
-          setMyDreams(newMyDreams);
-        }}
-      />
-      <MyDreamCards myDreams={myDreams} />
+      <MyDreamInput replaceMyDreams={replaceMyDreams} />
+      <MyDreamCards myDreams={myDreams} replaceMyDreams={replaceMyDreams} />
     </div>
   );
 };
