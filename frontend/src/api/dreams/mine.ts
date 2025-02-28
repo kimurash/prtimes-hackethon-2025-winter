@@ -30,3 +30,15 @@ export const createDream = async (dream: Dream) => {
 
   return;
 };
+
+export const deleteDream = async (dreamId: number) => {
+  const response = await fetch(`${ENDPOINT}/dreams/${dreamId}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    throw new Error("夢の削除に失敗しました");
+  }
+
+  return;
+};
