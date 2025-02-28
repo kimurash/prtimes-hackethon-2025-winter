@@ -8,7 +8,7 @@ from routes.public_dream import public_dream_bp
 
 app = Flask(__name__)
 
-CORS(app)
+CORS(app,supports_credentials=True) # credentialsをtrueにする
 
 # Flask-Loginのセットアップ
 app.config['SECRET_KEY'] = 'your_secret_key'  # セッション用のシークレットキー（必須）

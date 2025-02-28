@@ -8,7 +8,7 @@ dream_bp = Blueprint('dream', __name__)
 @dream_bp.route('/dreams', methods=['GET'])
 # @login_required # 実験用
 def get_dreams():
-    dreams = Dream.get_all_by_user(1)  # テスト用
+    dreams = Dream.get_all_by_user(current_user.id)  # テスト用
     return jsonify([dream.__dict__ for dream in dreams]), 200
 
 
