@@ -5,10 +5,12 @@ import {
   TwitterShareButton,
   XIcon,
 } from "react-share";
+import { deleteDream, fetchMyDreams } from "../../../api/dreams/mine";
 import { Dream } from "../../../types/dream";
 
 interface MyDreamCardsProps {
   myDreams: Dream[];
+  replaceMyDreams: (newMyDreams: Dream[]) => void;
 }
 
 const getPinkGradientClass = (likes: number): string => {
@@ -27,34 +29,71 @@ const getPinkGradientClass = (likes: number): string => {
   }
 };
 
-const MyDreamCards = ({ myDreams }: MyDreamCardsProps) => {
+const MyDreamCards = ({ myDreams, replaceMyDreams }: MyDreamCardsProps) => {
+  const handleDeleteButtonClick = async (dreamId: number) => {
+    await deleteDream(dreamId);
+    const myDreams = await fetchMyDreams();
+    replaceMyDreams(myDreams);
+  };
+
   return (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mx-8">
         {myDreams.map((dream, index) => (
           <AlertDialog.Root key={index}>
-            <AlertDialog.Trigger>
-              <div
-                // prettier-ignore
-                className={`
+            <div className="relative">
+              <AlertDialog.Trigger>
+                <div
+                  // prettier-ignore
+                  className={`
                   border rounded-xl shadow-lg p-4 min-h-48 py-6 bg-gradient-to-b from-white
                   ${getPinkGradientClass(dream.likes)}
-                `}
-              >
-                <p className="text-gray-800 overflow-hidden text-ellipsis">
-                  {dream.title}
+                  `}
+                >
+                  <Flex justify="between">
+                    <div className="text-gray-800 overflow-hidden text-ellipsis">
+                      {dream.title}
+                    </div>
+                  </Flex>
                   {dream.is_public && (
-                    <p className="text-green-500 font-medium mt-2 text-sm border-t pt-5 text-center">
+                    <div className="text-green-500 font-medium mt-2 text-sm border-t pt-5 text-center">
                       いいね {dream.likes}
-                    </p>
+                    </div>
                   )}
-                </p>
+                </div>
+              </AlertDialog.Trigger>
+              <button
+                className="absolute top-5 right-5 z-10"
+                onClick={() => {
+                  handleDeleteButtonClick(dream.id!);
+                }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  className="size-6"
+                  onClick={() => {
+                    console.log("clicked");
+                  }}
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M6 18 18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+            <AlertDialog.Content className="flex flex-col min-h-[300px] max-w-[400px]">
+              <AlertDialog.Title>{dream.title}</AlertDialog.Title>
+              <div className="mb-auto">
+                <AlertDialog.Description size="4">
+                  {dream.content}
+                </AlertDialog.Description>
               </div>
-            </AlertDialog.Trigger>
-            <AlertDialog.Content className="flex flex-col justify-between min-h-[300px] max-w-[400px]">
-              <AlertDialog.Description size="4">
-                {dream.content}
-              </AlertDialog.Description>
               <Flex gap="3" justify="center" direction="column" align="center">
                 <p className="text-center font-bold">
                   ＼発信して夢を叶えよう！／
@@ -62,14 +101,14 @@ const MyDreamCards = ({ myDreams }: MyDreamCardsProps) => {
                 <Flex gap="2" justify="center">
                   <FacebookShareButton
                     url={window.location.href}
-                    title={dream.title}
+                    title={dream.content}
                     hashtag="#AprilDream"
                   >
                     <FacebookIcon size={40} round />
                   </FacebookShareButton>
                   <TwitterShareButton
                     url={window.location.href}
-                    title={dream.title}
+                    title={dream.content}
                     hashtags={["AprilDream"]}
                   >
                     <XIcon size={40} round />
