@@ -24,13 +24,14 @@ def create_dream():
     data = request.get_json()
     title = data.get('title')
     content = data.get('content')
+    is_public = data.get('is_public')
     # user_id = current_user.id  # 本番
     user_id = 1  # テスト用
 
     if not title or not content:  # 内容の確認
         return jsonify({"error": "タイトルと内容は必須です"}), 400
-    # ドリームを作成してSQL保存、新規なので非公開
-    dream_id = Dream.create(user_id, title, content, is_public=False)
+    # ドリームを作成してSQL保存
+    dream_id = Dream.create(user_id, title, content, is_public)
 
     return jsonify({"message": "ドリームを作成しました", "dream_id": dream_id}), 201
 
