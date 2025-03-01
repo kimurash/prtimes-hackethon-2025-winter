@@ -1,6 +1,6 @@
-from flask import Blueprint, jsonify, request
-from flask_login import login_user
+from flask import Blueprint, jsonify, request, make_response
 from models.user_model import User  # userモデル読み込み
+from flask_jwt_extended import (create_access_token, set_access_cookies,unset_access_cookies, verify_jwt_in_request)
 
 # ブループリント作成
 auth_bp = Blueprint('auth', __name__)
@@ -10,18 +10,20 @@ auth_bp = Blueprint('auth', __name__)
 def login():
     if request.method == 'POST':
         credentials = request.get_json()
-
         email = credentials['email']
         password = credentials['password']
         # ユーザー情報を取得
         user = User.get_user_by_email(email)
         if user and user.check_password(password):
-            login_user(user) # ログイン情報登録
+            access_token = create_access_token(identity=user.id)
             response_data = { # return user info
                 "username": "{}".format(user.username),
-                "email": "{}".format(user.email)
+                "email": "{}".format(user.email),
+                "id": "{}".format(user.id), # テスト用にidも返してみる
             }
-            return jsonify(response_data), 200
+            response =  make_response(jsonify(response_data), 200) # アクセストークンとデータを返す
+            response.headers['Authorization'] = f'Bearer {access_token}'
+            return response
         else:
             return "",401 #failed
 
@@ -29,3 +31,4 @@ def login():
 def test(): # 生存確認API
     if request.method == 'GET':
         return jsonify({"message": "Hello"}), 200
+

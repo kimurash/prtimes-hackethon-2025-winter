@@ -1,6 +1,6 @@
-from flask import Blueprint, request, jsonify
-from flask_login import login_required, current_user
+from flask import Blueprint, request, jsonify,session
 from models.dream_models import Dream
+
 
 dream_bp = Blueprint('dream', __name__)
 
@@ -8,10 +8,14 @@ dream_bp = Blueprint('dream', __name__)
 @dream_bp.route('/dreams', methods=['GET'])
 # @login_required # 実験用
 def get_dreams():
-    print(current_user.id) # Userモデルから現在ログインしてるユーザーのidを取得、それをdreamテーブルから探すときに使いたい
-    dreams = Dream.get_all_by_user(current_user.id)  # テスト用
-    return jsonify([dream.__dict__ for dream in dreams]), 200
+    print(request.cookies.get('sample'))
+    if 'user_id' not in session:
+        return jsonify({"error": "You are not logged in"}), 401
 
+    user_id = session['user_id']
+
+    dreams = Dream.get_all_by_user(user_id)  # テスト用
+    return jsonify([dream.__dict__ for dream in dreams]), 200
 
 # ドリーム取得、指定したドリームの中身を返す
 @dream_bp.route('/dreams/<int:dream_id>', methods=['GET'])
@@ -30,7 +34,7 @@ def create_dream():
     title = data.get('title')
     content = data.get('content')
     # user_id = current_user.id  # 本番
-    user_id = 1  # テスト用
+    user_id = 1 # テスト用
 
     if not title or not content:  # 内容の確認
         return jsonify({"error": "タイトルと内容は必須です"}), 400
