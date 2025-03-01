@@ -1,3 +1,4 @@
+import os
 import psycopg2
 from psycopg2 import OperationalError
 from werkzeug.security import generate_password_hash, check_password_hash
