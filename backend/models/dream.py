@@ -1,5 +1,4 @@
 import psycopg2
-from flask_login import current_user
 
 DB_CONFIG = {  # connect info
     "dbname": "dreamsink",
@@ -26,7 +25,7 @@ class Dream:
             conn = psycopg2.connect(**DB_CONFIG)
             cur = conn.cursor()
             # user_idに該当するメモデータを取得
-            cur.execute("SELECT id, user_id, title, content, is_public,likes FROM dreams WHERE user_id = %s", (user_id,))
+            cur.execute("SELECT id, user_id, title, content, is_public,likes FROM dreams WHERE user_id = %s ORDER BY id DESC", (user_id,))
             dreams = [cls(*row) for row in cur.fetchall()]
             cur.close()
             conn.close()

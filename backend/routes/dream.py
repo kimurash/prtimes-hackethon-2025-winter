@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify,session
-from models.dream_models import Dream
+from models.dream import Dream
 from flask_jwt_extended import get_jwt_identity, jwt_required,decode_token
 
 dream_bp = Blueprint('dream', __name__)
@@ -40,12 +40,13 @@ def create_dream():
     data = request.get_json()
     title = data.get('title')
     content = data.get('content')
-    user_id =get_jwt_identity() # user idをjwtから取得
+    is_public = data.get('is_public')
+    user_id = get_jwt_identity() # user idをjwtから取得
 
     if not title or not content:  # 内容の確認
         return jsonify({"error": "タイトルと内容は必須です"}), 400
     # ドリームを作成してSQL保存、新規なので非公開
-    dream_id = Dream.create(user_id, title, content, is_public=False)
+    dream_id = Dream.create(user_id, title, content, is_public)
 
     return jsonify({"message": "ドリームを作成しました", "dream_id": dream_id}), 201
 
