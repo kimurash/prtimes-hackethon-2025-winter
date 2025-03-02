@@ -1,4 +1,4 @@
-import { Dream } from "../../types/dream";
+import { Dream } from "@/types/dream";
 
 const ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
 

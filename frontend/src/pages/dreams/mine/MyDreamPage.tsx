@@ -1,7 +1,7 @@
+import { fetchMyDreams } from "@/api/dreams/mine";
+import { Dream } from "@/types/dream";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { fetchMyDreams } from "../../../api/dreams/mine";
-import { Dream } from "../../../types/dream";
 import Header from "../components/Header";
 import MyDreamCards from "./MyDreamCards";
 import MyDreamInput from "./MyDreamInput";

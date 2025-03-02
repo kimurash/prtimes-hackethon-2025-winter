@@ -1,6 +1,6 @@
+import { createDream, fetchMyDreams } from "@/api/dreams/mine";
+import { Dream } from "@/types/dream";
 import { useState } from "react";
-import { createDream, fetchMyDreams } from "../../../api/dreams/mine";
-import { Dream } from "../../../types/dream";
 
 interface MyDreamInputProps {
   setMyDreams: (dreams: Dream[]) => void;

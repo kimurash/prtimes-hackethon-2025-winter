@@ -2,7 +2,7 @@ const Header = () => {
   return (
     <header className="bg-gradient-to-r from-orange-200 via-pink-200 to-red-200 text-black py-4 px-6 flex justify-between items-center shadow-md">
       {/* ロゴ */}
-      <h1 className="text-2xl font-bold">DreamSink</h1>
+      <h1 className="text-2xl font-bold">Dream Sink</h1>
 
       {/* メニュー */}
       <nav>

@@ -1,10 +1,14 @@
+import { login } from "@/api/auth/auth";
+import { userAtom } from "@/atoms/userAtom";
+import { useAtom } from "jotai";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { login } from "../../api/auth/auth";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [, setUser] = useAtom(userAtom);
 
   const navigate = useNavigate();
 
@@ -12,7 +16,8 @@ const LoginPage = () => {
     event.preventDefault();
 
     try {
-      await login(email, password);
+      const userInfo = await login(email, password);
+      setUser(userInfo);
       navigate("/");
     } catch (error) {
       alert("ログインに失敗しました");
