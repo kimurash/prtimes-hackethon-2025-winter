@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { fetchMyDreams } from "../../../api/dreams/mine";
 import { Dream } from "../../../types/dream";
 import Header from "../components/Header";
@@ -7,8 +8,15 @@ import MyDreamInput from "./MyDreamInput";
 
 const MyDreamPage = () => {
   const [myDreams, setMyDreams] = useState<Dream[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const token = sessionStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
     const fetchDreams = async () => {
       try {
         const dreams: Dream[] = await fetchMyDreams();
@@ -18,18 +26,14 @@ const MyDreamPage = () => {
       }
     };
 
-    void fetchDreams();
+    fetchDreams();
   }, []);
-
-  const replaceMyDreams = (newMyDreams: Dream[]) => {
-    setMyDreams(newMyDreams);
-  };
 
   return (
     <div>
       <Header />
-      <MyDreamInput replaceMyDreams={replaceMyDreams} />
-      <MyDreamCards myDreams={myDreams} replaceMyDreams={replaceMyDreams} />
+      <MyDreamInput setMyDreams={setMyDreams} />
+      <MyDreamCards myDreams={myDreams} setMyDreams={setMyDreams} />
     </div>
   );
 };
