@@ -3,10 +3,35 @@ from flask_cors import CORS
 from routes.auth import auth_bp
 from routes.dream import dream_bp
 from routes.public_dream import public_dream_bp
+from datetime import timedelta
+from flask_jwt_extended import JWTManager
 
 app = Flask(__name__)
 
-CORS(app)
+# CORSのセットアップ
+CORS(app,
+     resources={r"/dreams": {"origins": "http://localhost:5173"}},
+     supports_credentials=True,
+     allow_headers=["Content-Type", "Authorization"],
+     expose_headers=["Content-Type", "Authorization"],
+     methods=["GET", "POST", "OPTIONS", "DELETE", "PUT"])
+
+# use jwt
+app.config["JWT_SECRET_KEY"] = "my-jwt-key"
+
+# JWTの設定
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=10)
+app.config["JWT_TOKEN_LOCATION"] = ["headers"]
+app.config["JWT_HEADER_TYPE"] = "Bearer"
+app.config["JWT_COOKIE_SAMESITE"] = "Strict"
+app.config["JWT_COOKIE_SECURE"] = False  # ローカル環境のため False
+
+jwt = JWTManager(app)  # ← init_app(app) は不要
+
+@app.after_request
+def after_request(response):
+    print(response.headers)  # レスポンスヘッダーを出力して確認
+    return response
 
 # Blueprintの登録
 app.register_blueprint(auth_bp)
