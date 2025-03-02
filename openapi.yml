@@ -1,0 +1,139 @@
+openapi: 3.0.0
+info:
+  title: Dream Sink API
+  version: v1
+servers:
+  - url: http://localhost:5000
+tags: 
+  - name: dreams
+    description: 夢に関するAPI
+paths:
+  /dreams/mine:
+    get:
+      tags: 
+        - dreams
+      summary: Get my dreams
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Dream'
+    post:
+      tags: 
+        - dreams
+      summary: Create a new dream
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+                isPublic:
+                  type: boolean
+              required:
+                - content
+                - isPublic
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dream'
+
+  /dreams/mine/{dreamId}:
+    delete:
+      tags:
+        - dreams
+      summary: Delete my dream
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: dreamId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: integer
+      responses:
+        '204':
+          description: No Content
+
+  /dreams/public:
+    get:
+      tags:
+        - dreams
+      summary: Get public dreams
+      operationId: getPublicDreams
+      security: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Dream'
+  /dreams/public/{dreamId}:
+    patch:
+      tags:
+        - dreams
+      summary: Increment public dream likes
+      security: []
+      parameters:
+        - name: dreamId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dream'
+
+components:
+  schemas:
+    Dream:
+      type: object
+      properties:
+        id:
+          type: string
+          format: integer
+        userId:
+          type: string
+          format: integer
+        content:
+          type: string
+          format: date
+        isPublic:
+          type: boolean
+        likes:
+          type: integer
+          minimum: 0
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
