@@ -6,7 +6,6 @@ dream_bp = Blueprint('dream', __name__)
 
 # ドリーム取得 自分の作成したもの全て
 @dream_bp.route('/dreams', methods=['GET'])
-# @login_required # 実験用
 @jwt_required()
 def get_dreams():
     # debug code
@@ -27,7 +26,7 @@ def get_dreams():
 
 # ドリーム取得、指定したドリームの中身を返す
 @dream_bp.route('/dreams/<int:dream_id>', methods=['GET'])
-# @login_required # 実験用
+@jwt_required()
 def get_one_dream(dream_id):
     dream = Dream.get_by_id(dream_id)
     if dream is None:
@@ -36,13 +35,12 @@ def get_one_dream(dream_id):
     return jsonify(dream.__dict__), 200
 # ドリーム新規作成
 @dream_bp.route('/dreams', methods=['POST'])
-# @login_required # 実験用
+@jwt_required()
 def create_dream():
     data = request.get_json()
     title = data.get('title')
     content = data.get('content')
-    # user_id = current_user.id  # 本番
-    user_id = 1 # テスト用
+    user_id =get_jwt_identity() # user idをjwtから取得
 
     if not title or not content:  # 内容の確認
         return jsonify({"error": "タイトルと内容は必須です"}), 400
@@ -53,7 +51,7 @@ def create_dream():
 
 # ドリーム削除
 @dream_bp.route('/dreams/<int:dream_id>', methods=['DELETE'])
-# @login_required # 実験用
+@jwt_required()
 def delete_dream(dream_id):  # ドリームIDに基づいて削除
     if Dream.delete(dream_id):
         return jsonify({"success": "success to delete"}), 200
@@ -62,10 +60,9 @@ def delete_dream(dream_id):  # ドリームIDに基づいて削除
 
 # ドリーム更新
 @dream_bp.route('/dreams/<int:dream_id>', methods=['PUT'])
-# @login_required # 実験用
+@jwt_required()
 def update_dream(dream_id):
-    # user_id = current_user.id # 本番
-    user_id = 1
+    user_id = get_jwt_identity() # user idをjwtから取得
     # define data from front
     data = request.get_json()
     title = data.get('title')

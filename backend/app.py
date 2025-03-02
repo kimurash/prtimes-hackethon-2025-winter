@@ -5,7 +5,7 @@ from routes.auth import auth_bp
 from routes.public_dream import public_dream_bp
 from datetime import timedelta
 from flask_jwt_extended import JWTManager
-from flask import request
+# from flask import request
 
 app = Flask(__name__)
 

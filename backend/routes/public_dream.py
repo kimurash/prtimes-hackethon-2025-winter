@@ -1,12 +1,11 @@
 from flask import Blueprint, jsonify
-from flask_login import login_required
+from flask_jwt_extended import jwt_required
 from models.dream_models import Dream
 
 public_dream_bp = Blueprint('public_dream', __name__)
 
 # 公開されるドリーム取得
 @public_dream_bp.route('/public/dream', methods=['GET'])
-# @login_required # 本番用
 def view_public_dream():
     public_dreams = Dream.get_all_public_dreams()
     if public_dreams:
@@ -16,7 +15,6 @@ def view_public_dream():
 
 # いいねのインクリメントを行うAPI
 @public_dream_bp.route('/public/like/<int:dream_id>',methods=['POST'])
-#  @login_required # 本番用
 def increment_like_count(dream_id):
     dream = Dream.get_by_id(dream_id) # 該当のデータ抽出
     dream_count = dream.likes + 1
