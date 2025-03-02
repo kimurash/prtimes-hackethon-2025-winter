@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 # CORSのセットアップ
 CORS(app,
-     resources={r"/dreams": {"origins": "http://localhost:5173"}},
+     resources={r"/*": {"origins": "http://localhost:5173"}},
      supports_credentials=True,
      allow_headers=["Content-Type", "Authorization"],
      expose_headers=["Content-Type", "Authorization"],
@@ -27,11 +27,6 @@ app.config["JWT_COOKIE_SAMESITE"] = "Strict"
 app.config["JWT_COOKIE_SECURE"] = False  # ローカル環境のため False
 
 jwt = JWTManager(app)  # ← init_app(app) は不要
-
-@app.after_request
-def after_request(response):
-    print(response.headers)  # レスポンスヘッダーを出力して確認
-    return response
 
 # Blueprintの登録
 app.register_blueprint(auth_bp)
