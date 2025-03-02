@@ -12,6 +12,7 @@
   "dependencies": {
     "@radix-ui/themes": "^3.2.1",
     "@tailwindcss/vite": "^4.0.9",
+    "jotai": "^2.12.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router": "^7.2.0",
