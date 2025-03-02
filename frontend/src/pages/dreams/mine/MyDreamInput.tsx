@@ -1,6 +1,12 @@
 import { useState } from "react";
+import { createDream, fetchMyDreams } from "../../../api/dreams/mine";
+import { Dream } from "../../../types/dream";
 
-const MyDreamInput = () => {
+interface MyDreamInputProps {
+  replaceMyDreams: (dreams: Dream[]) => void;
+}
+
+const MyDreamInput = ({ replaceMyDreams }: MyDreamInputProps) => {
   const [dream, setDream] = useState("");
   const [isPublic, setIsPublic] = useState(false);
 
@@ -8,9 +14,22 @@ const MyDreamInput = () => {
     setIsPublic((prev) => !prev);
   };
 
-  const handleSave = () => {
-    console.log("保存:", { dream, isPublic });
-    // TODO: 必要ならAPIに送信する処理を追加
+  const handleSave = async () => {
+    try {
+      const newDream = {
+        title: dream,
+        content: dream,
+        is_public: isPublic,
+        likes: 0,
+      };
+      await createDream(newDream);
+
+      const myDreams: Dream[] = await fetchMyDreams();
+      replaceMyDreams(myDreams);
+    } catch (e) {
+      alert("夢の保存に失敗しました");
+      console.error(e);
+    }
   };
 
   return (

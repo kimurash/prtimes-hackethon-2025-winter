@@ -7,16 +7,10 @@ export const login = async (email: string, password: string) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ email, password }),
-    credentials: "include" // credentials trueにする
   });
 
   if (!response.ok) {
     throw new Error("ログインに失敗しました");
-  }
-  // jwtトークンの保存、cookieで
-  const token = response.headers.get("Authorization")
-  if(token){
-    sessionStorage.setItem("token",token)
   }
 
   const userInfo = await response.json();
