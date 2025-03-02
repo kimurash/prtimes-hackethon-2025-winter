@@ -23,6 +23,7 @@ jobs:
         with:
           output: swagger-ui
           spec-file: openapi.yml
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Documents
         uses: actions/upload-pages-artifact@v3
