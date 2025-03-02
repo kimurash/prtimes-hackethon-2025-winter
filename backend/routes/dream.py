@@ -1,18 +1,26 @@
 from flask import Blueprint, request, jsonify,session
 from models.dream_models import Dream
-
+from flask_jwt_extended import get_jwt_identity, jwt_required,decode_token
 
 dream_bp = Blueprint('dream', __name__)
 
 # ドリーム取得 自分の作成したもの全て
 @dream_bp.route('/dreams', methods=['GET'])
 # @login_required # 実験用
+@jwt_required()
 def get_dreams():
-    print(request.cookies.get('sample'))
-    if 'user_id' not in session:
+    # debug code
+    # token = request.headers.get('Authorization', "").replace("Bearer ", "")
+    # print(token)
+    # try:
+    #     decoded = decode_token(token)  # JWT をデコードしてみる
+    #     print("Decoded Token:", decoded)  # デコード結果を表示
+    # except Exception as e:
+    #     print("Error decoding token:", str(e))
+    #     return jsonify({"error": "Invalid token", "message": str(e)}), 422
+    user_id = get_jwt_identity() # jwtからidentity(userid)を取得
+    if user_id is None:
         return jsonify({"error": "You are not logged in"}), 401
-
-    user_id = session['user_id']
 
     dreams = Dream.get_all_by_user(user_id)  # テスト用
     return jsonify([dream.__dict__ for dream in dreams]), 200

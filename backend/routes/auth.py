@@ -15,7 +15,7 @@ def login():
         # ユーザー情報を取得
         user = User.get_user_by_email(email)
         if user and user.check_password(password):
-            access_token = create_access_token(identity=user.id)
+            access_token = create_access_token(identity=str(user.id)) # JWTトークン生成
             response_data = { # return user info
                 "username": "{}".format(user.username),
                 "email": "{}".format(user.email),
@@ -23,6 +23,7 @@ def login():
             }
             response =  make_response(jsonify(response_data), 200) # アクセストークンとデータを返す
             response.headers['Authorization'] = f'Bearer {access_token}'
+            print(response.headers)
             return response
         else:
             return "",401 #failed
