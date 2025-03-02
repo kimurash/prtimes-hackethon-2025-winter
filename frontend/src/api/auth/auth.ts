@@ -7,18 +7,19 @@ export const login = async (email: string, password: string) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ email, password }),
-    credentials: "include"
+    credentials: "include",
   });
 
   if (!response.ok) {
     throw new Error("ログインに失敗しました");
   }
-  // jwt token
-  const token = response.headers.get("Authorization");
-  if (token) {
-    sessionStorage.setItem("token", token);
-  }
-  
-  return response.json();
-};
 
+  const token = response.headers.get("Authorization");
+  if (!token) {
+    throw new Error("JWTトークンがありません");
+  }
+  sessionStorage.setItem("token", token);
+
+  const userInfo = await response.json();
+  return userInfo;
+};
