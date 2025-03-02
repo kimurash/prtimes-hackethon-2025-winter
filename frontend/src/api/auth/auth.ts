@@ -1,3 +1,5 @@
+import { User } from "@/types/user";
+
 const ENDPOINT = import.meta.env.VITE_API_ENDPOINT as string;
 
 export const login = async (email: string, password: string) => {
@@ -19,6 +21,6 @@ export const login = async (email: string, password: string) => {
   }
   sessionStorage.setItem("token", token);
 
-  const userInfo = await response.json();
+  const userInfo: User = await response.json();
   return userInfo;
 };

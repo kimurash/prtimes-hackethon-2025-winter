@@ -1,3 +1,5 @@
+import { deleteDream, fetchMyDreams } from "@/api/dreams/mine";
+import { Dream } from "@/types/dream";
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
 import {
   FacebookIcon,
@@ -5,8 +7,6 @@ import {
   TwitterShareButton,
   XIcon,
 } from "react-share";
-import { deleteDream, fetchMyDreams } from "../../../api/dreams/mine";
-import { Dream } from "../../../types/dream";
 
 interface MyDreamCardsProps {
   myDreams: Dream[];
