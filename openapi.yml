@@ -148,21 +148,21 @@ components:
         id:
           type: string
           format: integer
-        userId:
+        user_id:
           type: string
           format: integer
         content:
           type: string
           format: date
-        isPublic:
+        is_public:
           type: boolean
         likes:
           type: integer
           minimum: 0
-        createdAt:
+        created_at:
           type: string
           format: date-time
-        updatedAt:
+        updated_at:
           type: string
           format: date-time
     User:
