@@ -11,13 +11,13 @@ const Header = () => {
             href="/dreams/public"
             className="hover:text-white transition-colors cursor-pointer"
           >
-            みんなのメモ
+            みんなの夢
           </a>
           <a
-            href="/"
+            href="/dreams/mine"
             className="hover:text-white transition-colors cursor-pointer"
           >
-            自分のメモ
+            自分の夢
           </a>
         </div>
       </nav>

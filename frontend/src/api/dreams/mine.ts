@@ -3,8 +3,16 @@ import { Dream } from "../../types/dream";
 const ENDPOINT = import.meta.env.VITE_API_ENDPOINT as string;
 
 export const fetchMyDreams = async () => {
+  const token = sessionStorage.getItem("token");
+  if (!token) {
+    throw new Error("ログインしていません");
+  }
+
   const response = await fetch(`${ENDPOINT}/dreams`, {
     method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
 
   if (!response.ok) {
@@ -16,9 +24,15 @@ export const fetchMyDreams = async () => {
 };
 
 export const createDream = async (dream: Dream) => {
+  const token = sessionStorage.getItem("token");
+  if (!token) {
+    throw new Error("ログインしていません");
+  }
+
   const response = await fetch(`${ENDPOINT}/dreams`, {
     method: "POST",
     headers: {
+      Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(dream),
@@ -32,8 +46,16 @@ export const createDream = async (dream: Dream) => {
 };
 
 export const deleteDream = async (dreamId: number) => {
+  const token = sessionStorage.getItem("token");
+  if (!token) {
+    throw new Error("ログインしていません");
+  }
+
   const response = await fetch(`${ENDPOINT}/dreams/${dreamId}`, {
     method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
 
   if (!response.ok) {

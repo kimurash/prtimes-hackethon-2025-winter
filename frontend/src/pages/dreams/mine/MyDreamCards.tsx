@@ -10,7 +10,7 @@ import { Dream } from "../../../types/dream";
 
 interface MyDreamCardsProps {
   myDreams: Dream[];
-  replaceMyDreams: (newMyDreams: Dream[]) => void;
+  setMyDreams: (newMyDreams: Dream[]) => void;
 }
 
 const getPinkGradientClass = (likes: number): string => {
@@ -29,11 +29,11 @@ const getPinkGradientClass = (likes: number): string => {
   }
 };
 
-const MyDreamCards = ({ myDreams, replaceMyDreams }: MyDreamCardsProps) => {
+const MyDreamCards = ({ myDreams, setMyDreams }: MyDreamCardsProps) => {
   const handleDeleteButtonClick = async (dreamId: number) => {
     await deleteDream(dreamId);
     const myDreams = await fetchMyDreams();
-    replaceMyDreams(myDreams);
+    setMyDreams(myDreams);
   };
 
   return (

@@ -11,6 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<MyDreamPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/dreams/mine" element={<MyDreamPage />} />
         <Route path="/dreams/public" element={<PublicDreamPage />} />
       </Routes>
     </BrowserRouter>

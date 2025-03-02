@@ -3,18 +3,18 @@ import { createDream, fetchMyDreams } from "../../../api/dreams/mine";
 import { Dream } from "../../../types/dream";
 
 interface MyDreamInputProps {
-  replaceMyDreams: (dreams: Dream[]) => void;
+  setMyDreams: (dreams: Dream[]) => void;
 }
 
-const MyDreamInput = ({ replaceMyDreams }: MyDreamInputProps) => {
+const MyDreamInput = ({ setMyDreams }: MyDreamInputProps) => {
   const [dream, setDream] = useState("");
   const [isPublic, setIsPublic] = useState(false);
 
-  const handleTogglePrivacy = () => {
+  const handlePrivacyToggleClick = () => {
     setIsPublic((prev) => !prev);
   };
 
-  const handleSave = async () => {
+  const handleSaveButtonClick = async () => {
     try {
       const newDream = {
         title: dream,
@@ -25,7 +25,9 @@ const MyDreamInput = ({ replaceMyDreams }: MyDreamInputProps) => {
       await createDream(newDream);
 
       const myDreams: Dream[] = await fetchMyDreams();
-      replaceMyDreams(myDreams);
+      setMyDreams(myDreams);
+
+      setDream("");
     } catch (e) {
       alert("夢の保存に失敗しました");
       console.error(e);
@@ -44,7 +46,7 @@ const MyDreamInput = ({ replaceMyDreams }: MyDreamInputProps) => {
       </div>
       <div className="flex items-center gap-4 mt-4">
         <button
-          onClick={handleTogglePrivacy}
+          onClick={handlePrivacyToggleClick}
           className={`px-6 py-2 rounded-full text-white ${
             isPublic ? "bg-green-500" : "bg-gray-500"
           }`}
@@ -52,7 +54,7 @@ const MyDreamInput = ({ replaceMyDreams }: MyDreamInputProps) => {
           {isPublic ? "公開" : "非公開"}
         </button>
         <button
-          onClick={handleSave}
+          onClick={handleSaveButtonClick}
           className="px-6 py-2 rounded-md bg-green-300 hover:bg-green-400 transition"
         >
           保存する
