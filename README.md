@@ -1,4 +1,4 @@
-# DreamSink
+# Dream　Sink
 
 書き溜めた夢を公開して「いいね！」がもらえるWebサービス
 
@@ -23,7 +23,7 @@ WIP
 
 | カテゴリ       | 技術                                        | 
 | -------------- | ------------------------------------------- | 
-| フロントエンド | React, React Router, Tailwind CSS, Radix UI | 
+| フロントエンド | React, React Router, Tailwind CSS, Radix UI, Jotai | 
 | バックエンド   | Flask                                       | 
 | データベース   | PostgreSQL                                  | 
 
