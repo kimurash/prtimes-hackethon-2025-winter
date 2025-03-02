@@ -11,7 +11,7 @@ export const fetchMyDreams = async () => {
   const response = await fetch(`${ENDPOINT}/dreams`, {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
     },
   });
 
@@ -32,7 +32,7 @@ export const createDream = async (dream: Dream) => {
   const response = await fetch(`${ENDPOINT}/dreams`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(dream),
@@ -54,7 +54,7 @@ export const deleteDream = async (dreamId: number) => {
   const response = await fetch(`${ENDPOINT}/dreams/${dreamId}`, {
     method: "DELETE",
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `${token}`,
     },
   });
 

@@ -24,6 +24,7 @@ def login():
             }
             response = jsonify(response_data)
             # headerにjwt tokenを仕込む
+            # print(response)
             response.headers["Authorization"] = "Bearer {}".format(access_token)
             return response
         else:
