@@ -13,6 +13,12 @@ export const login = async (email: string, password: string) => {
     throw new Error("ログインに失敗しました");
   }
 
+  const token = response.headers.get("Authorization");
+  if (token === null) {
+    throw new Error("JWTトークンを取得できませんでした");
+  }
+  sessionStorage.setItem("token", token);
+
   const userInfo = await response.json();
   return userInfo;
 };
