@@ -3,7 +3,7 @@ import psycopg2
 DB_CONFIG = {  # connect info
     "dbname": "dreamsink",
     "user": "test",
-    "password": "password",
+    "password": "test",
     "host": "localhost",
     "port": "5432"
 }
@@ -40,7 +40,7 @@ class Dream:
         try:
             conn = psycopg2.connect(**DB_CONFIG)
             cur = conn.cursor()
-            cur.execute("SELECT id, user_id, title, content, is_public, likes FROM dreams WHERE id = %s", (id,)) 
+            cur.execute("SELECT id, user_id, title, content, is_public, likes FROM dreams WHERE id = %s", (id,))
             result = cur.fetchone()
             if result:
                 cur.close()
@@ -59,7 +59,7 @@ class Dream:
     def create(cls, user_id, title, content, is_public=False):
         # 新しいメモの作成 ****user_id必要****
         try:
-            likes = 0 # 作成時はlikesは0
+            likes = 0
             conn = psycopg2.connect(**DB_CONFIG)
             cur = conn.cursor()
             cur.execute(
@@ -123,8 +123,7 @@ class Dream:
         try:
             conn = psycopg2.connect(**DB_CONFIG)
             cur = conn.cursor()
-            # 並び順を一定にするためidの照準にソート
-            cur.execute("SELECT id, user_id, title, content, is_public, likes FROM dreams WHERE is_public = TRUE ORDER BY id DESC")
+            cur.execute("SELECT id, user_id, title, content, is_public, likes FROM dreams WHERE is_public = TRUE")
             dreams = [cls(*row) for row in cur.fetchall()]
             cur.close()
             conn.close()
