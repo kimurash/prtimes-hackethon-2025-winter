@@ -9,13 +9,14 @@ DB_CONFIG = {  # connect info
 }
 
 class Dream:
-    def __init__(self, id, user_id, title, content, is_public,likes):
+    def __init__(self, id, user_id, content, is_public,likes,created_at,updated_at):
         self.id = id
         self.user_id = user_id
-        self.title = title
         self.content = content
         self.is_public = is_public
         self.likes = likes
+        self.created_at = created_at
+        self.updated_at = updated_at
 
     @classmethod
     def get_all_by_user(cls, user_id):
@@ -25,7 +26,7 @@ class Dream:
             conn = psycopg2.connect(**DB_CONFIG)
             cur = conn.cursor()
             # user_idに該当するメモデータを取得、id順
-            cur.execute("SELECT id, user_id, title, content, is_public,likes FROM dreams WHERE user_id = %s ORDER BY id DESC", (user_id,))
+            cur.execute("SELECT id, user_id, content, is_public,likes,created_at,updated_at FROM dreams WHERE user_id = %s ORDER BY id DESC", (user_id,))
             dreams = [cls(*row) for row in cur.fetchall()]
             cur.close()
             conn.close()
