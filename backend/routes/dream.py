@@ -1,12 +1,15 @@
 from flask import Blueprint, jsonify, request
 from models.dream import Dream
+from flask_jwt_extended import jwt_required,get_jwt_identity
 
 dream_bp = Blueprint('dream', __name__)
 
 # ドリーム取得 自分の作成したもの全て
 @dream_bp.route('/dreams', methods=['GET'])
+@jwt_required
 def get_dreams():
-    dreams = Dream.get_all_by_user(1)  # テスト用
+    user_id = get_jwt_identity()
+    dreams = Dream.get_all_by_user(user_id)  # トークンのuser idに当たるものを参照
     return jsonify([dream.__dict__ for dream in dreams]), 200
 
 
