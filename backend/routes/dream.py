@@ -23,13 +23,13 @@ def get_one_dream(dream_id):
     return jsonify(dream.__dict__), 200
 # ドリーム新規作成
 @dream_bp.route('/dreams', methods=['POST'])
+@jwt_required
 def create_dream():
     data = request.get_json()
     title = data.get('title')
     content = data.get('content')
     is_public = data.get('is_public')
-    # user_id = current_user.id  # 本番
-    user_id = 1  # テスト用
+    user_id = get_jwt_identity() # get jwt
 
     if not title or not content:  # 内容の確認
         return jsonify({"error": "タイトルと内容は必須です"}), 400
@@ -40,7 +40,13 @@ def create_dream():
 
 # ドリーム削除
 @dream_bp.route('/dreams/<int:dream_id>', methods=['DELETE'])
+@jwt_required
 def delete_dream(dream_id):  # ドリームIDに基づいて削除
+    # 認証について後ほど修正必要
+    user_id = get_jwt_identity() # get jwt
+    if user_id is None:
+        return jsonify({"error": "NoZ authorization"}), 400
+
     if Dream.delete(dream_id):
         return jsonify({"success": "success to delete"}), 200
     else:
@@ -48,9 +54,13 @@ def delete_dream(dream_id):  # ドリームIDに基づいて削除
 
 # ドリーム更新
 @dream_bp.route('/dreams/<int:dream_id>', methods=['PUT'])
-# @login_required # 実験用
+@jwt_required
 def update_dream(dream_id):
     # define data from front
+    user_id = get_jwt_identity()  # get jwt
+    if user_id is None:
+        return jsonify({"error": "NoZ authorization"}), 400
+
     data = request.get_json()
     title = data.get('title')
     content = data.get('content')
