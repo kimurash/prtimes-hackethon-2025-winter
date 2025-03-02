@@ -1,5 +1,6 @@
 const ENDPOINT = import.meta.env.VITE_API_ENDPOINT as string;
 
+
 // 夢データの型
 export type Card = {
   id: number;
@@ -9,7 +10,16 @@ export type Card = {
 
 export const fetchDreams = async (): Promise<Card[]> => {
     try {
-      const res = await fetch(`${ENDPOINT}/dreams`, { method: "GET" ,credentials: "include"});
+      // ストレージに保存したtokenを取得
+      const token = sessionStorage.getItem("token")
+      const res = await fetch(`${ENDPOINT}/dreams`, { 
+        method: "GET" ,
+        mode: "cors",
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `${token}` //sessionトークンを取得
+        },
+        });
       if (!res.ok) throw new Error("データ取得エラー");
       return await res.json();
     } catch (error) {

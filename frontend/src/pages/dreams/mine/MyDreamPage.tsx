@@ -4,6 +4,10 @@ import { Dream } from "../../../types/dream";
 import Header from "../components/Header";
 import MyDreamCards from "./MyDreamCards";
 import MyDreamInput from "./MyDreamInput";
+<<<<<<< HEAD
+=======
+import Header from "../components/Header";
+>>>>>>> bf4e950 (changed: jwt authorization)
 
 const MyDreamPage = () => {
   const [myDreams, setMyDreams] = useState<Dream[]>([]);
