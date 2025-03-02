@@ -28,15 +28,10 @@ app.config["JWT_COOKIE_SECURE"] = False  # ローカル環境のため False
 
 jwt = JWTManager(app)  # ← init_app(app) は不要
 
-# @app.after_request
-# def after_request(response):
-#     print(response.headers)  # レスポンスヘッダーを出力して確認
-#     return response
-
 # Blueprintの登録
 app.register_blueprint(auth_bp)
 app.register_blueprint(dream_bp)
 app.register_blueprint(public_dream_bp)
 
 if __name__ == "__main__":
-    app.run(port=5100,debug=True)
+    app.run(debug=True)
