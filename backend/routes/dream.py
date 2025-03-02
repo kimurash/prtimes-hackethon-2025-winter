@@ -5,7 +5,7 @@ from flask_jwt_extended import jwt_required,get_jwt_identity
 dream_bp = Blueprint('dream', __name__)
 
 # ドリーム取得 自分の作成したもの全て
-@dream_bp.route('/dreams', methods=['GET'])
+@dream_bp.route('/dreams/mine', methods=['GET'])
 @jwt_required()
 def get_dreams():
     user_id = get_jwt_identity()
