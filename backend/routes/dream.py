@@ -7,6 +7,7 @@ dream_bp = Blueprint('dream', __name__)
 # ドリーム取得 自分の作成したもの全て
 @dream_bp.route('/dreams', methods=['GET'])
 # @login_required # 実験用
+@jwt_required()
 def get_dreams():
     # debug code
     # token = request.headers.get('Authorization', "").replace("Bearer ", "")
@@ -63,7 +64,7 @@ def delete_dream(dream_id):  # ドリームIDに基づいて削除
 @dream_bp.route('/dreams/<int:dream_id>', methods=['PUT'])
 @jwt_required()
 def update_dream(dream_id):
-    user_id = get_jwt_identity() # user idをjwtから取得
+    # user_id = get_jwt_identity() # user idをjwtから取得
     # define data from front
     data = request.get_json()
     title = data.get('title')
